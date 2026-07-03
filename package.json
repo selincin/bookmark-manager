@@ -16,6 +16,8 @@
     "lint:eslint": "eslint . --fix --cache"
   },
   "dependencies": {
+    "@primeicons/core": "^8.0.0-alpha.1",
+    "@primeicons/vue": "^8.0.0-alpha.1",
     "@primeuix/themes": "^2.0.3",
     "@tailwindcss/vite": "^4.3.1",
     "@vueuse/core": "^14.3.0",

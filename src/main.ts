@@ -1,15 +1,14 @@
 import './assets/main.css'
+import 'primeicons/primeicons.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import PrimeVue from 'primevue/config'
-import Aura from '@primeuix/themes/Aura'
-import 'primeicons/primeicons.css'
-
-
-import App from './App.vue'
 import { definePreset } from '@primeuix/themes'
 
+import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice';
+import Aura from '@primeuix/themes/Aura'
+import App from './App.vue'
 
 const app = createApp(App)
 const MyPreset = definePreset(Aura, {
@@ -36,6 +35,7 @@ app.use(PrimeVue, {
     preset: MyPreset,
   },
 })
+app.use(ToastService)
 app.mount('#app')
 
 
