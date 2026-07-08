@@ -1,10 +1,13 @@
 export default interface Bookmark {
-  id: string
+  id: number
   title: string
+  description: string
   url: string
   tag: string
+  created_at: string
   archived: boolean
-  createdAt: string
-  description: string
   icon: string
+  visit_count: number
+  pinned: boolean
+  pinned_at: string | null
 }

@@ -5,10 +5,12 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { definePreset } from '@primeuix/themes'
 
-import PrimeVue from 'primevue/config'
-import ToastService from 'primevue/toastservice';
 import Aura from '@primeuix/themes/Aura'
 import App from './App.vue'
+
+import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice';
+import DialogService from 'primevue/dialogservice';
 
 const app = createApp(App)
 const MyPreset = definePreset(Aura, {
@@ -36,6 +38,7 @@ app.use(PrimeVue, {
   },
 })
 app.use(ToastService)
+app.use(DialogService)
 app.mount('#app')
 
 

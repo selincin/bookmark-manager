@@ -2,13 +2,17 @@ import { ref } from 'vue'
 import { useBookmarkStore } from '@/store/bookmarks'
 
 import axios from 'axios'
-
 import type Bookmark from '../models/Bookmark'
 
+const BASE_URL = import.meta.env.VITE_SUPABASE_URL
+const API_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-const BASE_URL = import.meta.env.VITE_API_URL
+const headers = {
+    'apikey': API_KEY,
+    'Authorization': `Bearer ${API_KEY}`,
+    'Content-Type': 'application/json'
+}
 
-const bookmarks = ref<Bookmark[]>([])
 const loading = ref(false)
 
 export function useBookmarks() {
@@ -17,8 +21,9 @@ export function useBookmarks() {
     const fetchBookmarks = async () => {
         let result
         try {
-            result = await axios.get('/bookmarks', {
-                baseURL: BASE_URL
+            result = await axios.get('/rest/v1/bookmarks?select=*', {
+                baseURL: BASE_URL,
+                headers: headers
             })
         } catch (error) {
             console.log('error: ', error);
@@ -44,7 +49,77 @@ export function useBookmarks() {
         console.log('Bookmarks:', bookmarkStore.bookmarks);
     }
 
+    const archiveBookmark = async (id: string) => {
+        const result = await axios.patch(`/rest/v1/bookmarks?id=eq.${id}`,
+            { archived: true },
+            { baseURL: BASE_URL, headers: headers }
+        )
+
+        if (result) {
+            const index = bookmarkStore.bookmarks.findIndex((b) => b.id === id)
+            if (index !== -1) {
+                bookmarkStore.bookmarks[index].archived = true
+            }
+        }
+    }
+
+    const togglePin = async (id: number) => {
+        const bookmark = bookmarkStore.bookmarks.find((b) => b.id === id)
+        if (!bookmark) return
+
+        const newPinnedState = !bookmark.pinned
+        const pinnedAt = newPinnedState ? new Date().toISOString() : null
+
+        await axios.patch(`/rest/v1/bookmarks?id=eq.${id}`,
+            { pinned: newPinnedState, pinned_at: pinnedAt },
+            { baseURL: BASE_URL, headers }
+        )
+
+        bookmark.pinned = newPinnedState
+        bookmark.pinned_at = pinnedAt
+    }
+
+    const visitBookmark = async (id: string) => {
+        const bookmark = bookmarkStore.bookmarks.find(b => b.id === id)
+        if (!bookmark) return
+
+        const newCount = (bookmark.visit_count ?? 0) + 1
+
+        await axios.patch(`/rest/v1/bookmarks?id=eq.${id}`,
+            { visit_count: newCount },
+            { baseURL: BASE_URL, headers }
+        )
+
+        bookmark.visit_count = newCount
+    }
+
+    const updateBookmark = async (bookmark: Bookmark) => {
+        try {
+            await axios.patch(`/rest/v1/bookmarks?id=eq.${Number(bookmark.id)}`,
+                {
+                    title: bookmark.title,
+                    description: bookmark.description,
+                    url: bookmark.url
+                },
+                { baseURL: BASE_URL, headers }
+            )
+
+            const storedBookmark = bookmarkStore.bookmarks.find(b => b.id === bookmark.id)
+            if (storedBookmark) {
+                storedBookmark.title = bookmark.title
+                storedBookmark.description = bookmark.description
+                storedBookmark.url = bookmark.url
+            }
+        } catch (error) {
+            console.log('error: ', error)
+        }
+    }
+
     return {
-        loadBookmarks
+        loadBookmarks,
+        archiveBookmark,
+        togglePin,
+        visitBookmark,
+        updateBookmark,
     }
 }
