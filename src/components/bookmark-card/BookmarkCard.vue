@@ -13,7 +13,6 @@ import EditBookmark from '../dialogs/editBookmark.vue';
 import Divider from 'primevue/divider';
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
-import DynamicDialog from 'primevue/dynamicdialog';
 import Tag from 'primevue/tag';
 
 
@@ -33,9 +32,6 @@ const currentBookmark = computed(() => {
     return bookmarkStore.bookmarks.find((b) => b.id === props.bookmark.id)
 })
 
-const getPinLabel = () => {
-    return currentBookmark.value?.pinned ? 'Unpin' : 'Pin'
-}
 
 const items = computed(() => [
     {
@@ -54,17 +50,17 @@ const items = computed(() => [
                 command: () => copyToClipboard(props.bookmark.url)
             },
             { 
-                label: getPinLabel(), 
+                label: currentBookmark.value?.pinned ? 'Unpin' : 'Pin', 
                 icon: 'pi pi-thumbtack',
                 command: () => pinBookmark(props.bookmark.id)   
             },
             { 
                 label: 'Edit', 
                 icon: 'pi pi-pencil',
-                command: () => editBookmark(props.bookmark.id)
+                command: () => editBookmark()
             },
             { 
-                label: 'Archive', 
+                label: currentBookmark.value?.archived ? 'Restore' : 'Archive', 
                 icon: 'pi pi-box',
                 command: () => archiveBookmark(props.bookmark.id)
             },
@@ -73,7 +69,7 @@ const items = computed(() => [
 ]);
 
 
-const toggle = (event) => {
+const toggle = (event: Event) => {
     menu.value.toggle(event);
 };
 
@@ -87,17 +83,11 @@ const copyToClipboard = (url: string) => {
         });
 };
 
-const archiveBookmark = (id: string) => {
+const archiveBookmark = (id: number) => {
     useBookmarksComposable.archiveBookmark(id)
-        .then(() => {
-            toast.add({ severity: 'success', summary: 'Bookmark archived', detail: `Bookmark with ID ${id} has been archived.`, life: 3000 });
-        })
-        .catch((err) => {
-            toast.add({ severity: 'error', summary: 'Error archiving bookmark', detail: err.message, life: 3000 });
-        });
 }
 
-const pinBookmark = (id: string) => {
+const pinBookmark = (id: number) => {
     useBookmarksComposable.togglePin(id);
 }
 
@@ -173,7 +163,11 @@ const BookmarkTag = () => {
                 </div>
                 <div class="flex items-center gap-1">
                     <i class="pi pi-calendar"></i>
-                    {{ dateTimeComposable.formatDateDDMMYYYY(bookmark?.created_at) }}
+                    {{ dateTimeComposable.formatDateDDMM(bookmark?.created_at) }}
+                </div>
+                <div v-if="bookmark?.updated_at" class="flex items-center gap-1">
+                    <i class="pi pi-clock"></i>
+                    {{ dateTimeComposable.formatRelative(bookmark?.updated_at) }}
                 </div>
             </div>
             <div class="flex items-center gap-1">

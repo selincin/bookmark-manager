@@ -48,38 +48,38 @@ export function useBookmarks() {
         bookmarkStore.loading = false;
         console.log('Bookmarks:', bookmarkStore.bookmarks);
     }
-
-    const archiveBookmark = async (id: string) => {
-        const result = await axios.patch(`/rest/v1/bookmarks?id=eq.${id}`,
-            { archived: true },
-            { baseURL: BASE_URL, headers: headers }
-        )
-
-        if (result) {
-            const index = bookmarkStore.bookmarks.findIndex((b) => b.id === id)
-            if (index !== -1) {
-                bookmarkStore.bookmarks[index].archived = true
-            }
-        }
-    }
-
-    const togglePin = async (id: number) => {
+    
+    const archiveBookmark = async (id: number) => {
         const bookmark = bookmarkStore.bookmarks.find((b) => b.id === id)
         if (!bookmark) return
 
-        const newPinnedState = !bookmark.pinned
-        const pinnedAt = newPinnedState ? new Date().toISOString() : null
+        const newArchivedState = !bookmark.archived
 
         await axios.patch(`/rest/v1/bookmarks?id=eq.${id}`,
-            { pinned: newPinnedState, pinned_at: pinnedAt },
+            { archived: newArchivedState },
             { baseURL: BASE_URL, headers }
         )
 
-        bookmark.pinned = newPinnedState
-        bookmark.pinned_at = pinnedAt
+        bookmark.archived = newArchivedState
     }
 
-    const visitBookmark = async (id: string) => {
+    const togglePin = async (id: number) => {
+    const bookmark = bookmarkStore.bookmarks.find((b) => b.id === id)
+    if (!bookmark) return
+
+    const newPinnedState = !bookmark.pinned
+    const pinnedAt = newPinnedState ? new Date().toISOString() : null
+
+    await axios.patch(`/rest/v1/bookmarks?id=eq.${id}`,
+        { pinned: newPinnedState, pinned_at: pinnedAt },
+        { baseURL: BASE_URL, headers }
+    )
+
+    bookmark.pinned = newPinnedState
+    bookmark.pinned_at = pinnedAt
+}
+
+    const visitBookmark = async (id: number) => {
         const bookmark = bookmarkStore.bookmarks.find(b => b.id === id)
         if (!bookmark) return
 
@@ -94,26 +94,27 @@ export function useBookmarks() {
     }
 
     const updateBookmark = async (bookmark: Bookmark) => {
-        try {
-            await axios.patch(`/rest/v1/bookmarks?id=eq.${Number(bookmark.id)}`,
-                {
-                    title: bookmark.title,
-                    description: bookmark.description,
-                    url: bookmark.url
-                },
-                { baseURL: BASE_URL, headers }
-            )
+    try {
+        await axios.patch(`/rest/v1/bookmarks?id=eq.${Number(bookmark.id)}`,
+            {
+                title: bookmark.title,
+                description: bookmark.description,
+                url: bookmark.url
+            },
+            { baseURL: BASE_URL, headers }
+        )
 
-            const storedBookmark = bookmarkStore.bookmarks.find(b => b.id === bookmark.id)
-            if (storedBookmark) {
-                storedBookmark.title = bookmark.title
-                storedBookmark.description = bookmark.description
-                storedBookmark.url = bookmark.url
+        const index = bookmarkStore.bookmarks.findIndex(b => b.id === bookmark.id)
+        if (index !== -1) {
+            bookmarkStore.bookmarks[index] = { 
+                ...bookmarkStore.bookmarks[index], 
+                ...bookmark 
             }
-        } catch (error) {
-            console.log('error: ', error)
         }
+    } catch (error) {
+        console.log('error: ', error)
     }
+}
 
     return {
         loadBookmarks,

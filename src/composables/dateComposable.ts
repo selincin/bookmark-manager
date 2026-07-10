@@ -12,7 +12,6 @@ dayjs.extend(localeData);
 dayjs.extend(advancedFormat);
 
 export function useDateTime() {
-    // format dateTime as defined in SVH-317
     const formatRelative = (dateTimeString): String => {
         const now = dayjs();
         const dateTime = dayjs(dateTimeString);
@@ -45,10 +44,10 @@ export function useDateTime() {
             return "yesterday";
         }
 
-        return dateTime.format('L');
+        return dateTime.format('DD. MMM');
     };
 
-    const formatDateDDMMYYYY = (dateTimeString) => {
+    const formatDateDDMM = (dateTimeString) => {
         const dateTime = dayjs(dateTimeString);
         return dateTime.format('DD. MMM');
     };
@@ -56,6 +55,6 @@ export function useDateTime() {
 
     return {
         formatRelative,
-        formatDateDDMMYYYY,
+        formatDateDDMM,
     };
 }

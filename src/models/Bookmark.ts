@@ -10,4 +10,5 @@ export default interface Bookmark {
   visit_count: number
   pinned: boolean
   pinned_at: string | null
+  updated_at: string | null
 }

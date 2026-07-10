@@ -7,6 +7,7 @@ import { definePreset } from '@primeuix/themes'
 
 import Aura from '@primeuix/themes/Aura'
 import App from './App.vue'
+import router from './router'
 
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice';
@@ -39,6 +40,7 @@ app.use(PrimeVue, {
 })
 app.use(ToastService)
 app.use(DialogService)
+app.use(router)
 app.mount('#app')
 
 

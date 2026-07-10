@@ -5,7 +5,6 @@ import { useBookmarks } from '@/composables/useBookmarksComposable';
 import FloatLabel from 'primevue/floatlabel';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
-import Message from 'primevue/message';
 import type Bookmark from '@/models/Bookmark';
 
 const injectedData = inject('dialogRef');
