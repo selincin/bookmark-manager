@@ -2,6 +2,14 @@
 
 A modern, responsive bookmark management app built with Vue 3 and TypeScript. This is a **frontend-only project** that uses Supabase as a backend-as-a-service for data storage and a REST API.
 
+## 🌐 Live Demo
+
+Deployed with [Vercel](https://vercel.com) – [bookmark-manager-n1qw1px93-selin5.vercel.app](https://bookmark-manager-n1qw1px93-selin5.vercel.app)
+
+## 🎯 Challenge
+
+This project is based on the [Bookmark Manager App](https://www.frontendmentor.io/challenges/bookmark-manager-app) challenge by [Frontend Mentor](https://www.frontendmentor.io).
+
 ## ✨ Features
 
 - 📌 Pin & unpin bookmarks (pinned bookmarks always appear first)
@@ -13,7 +21,7 @@ A modern, responsive bookmark management app built with Vue 3 and TypeScript. Th
 - 👁️ Track visit count per bookmark
 - 📅 Display creation and last edited date
 - 🌐 Automatic favicon loading via Google Favicon Service
-- 📱 Responsive layout (mobile, tablet, desktop)
+- 📱 Responsive layout (mobile, desktop)
 
 ## 🛠️ Tech Stack
 
