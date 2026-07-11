@@ -92,6 +92,7 @@ const filteredBookmarks = computed(() => {
     <!-- Cards -->
     <div class="flex flex-wrap p-5 gap-4 overflow-y-auto">
       <BookmarkCard v-for="bookmark in filteredBookmarks" :key="bookmark.id" :bookmark="bookmark" />
+      <div v-if="filteredBookmarks.length == 0">No results found</div>
     </div>
   </div>
 </template>
