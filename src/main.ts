@@ -5,7 +5,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { definePreset } from '@primeuix/themes'
 
-import Aura from '@primeuix/themes/Aura'
+import Aura from '@primeuix/themes/aura'
 import App from './App.vue'
 import router from './router'
 
