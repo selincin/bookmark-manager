@@ -7,7 +7,6 @@ import { useDialog } from 'primevue/usedialog';
 import SideMenu from './components/side-menu/SideMenu.vue';
 import BookmarkDialog from './components/dialogs/BookmarkDialog.vue';
 
-// primevue components
 import Button from 'primevue/button';
 import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
@@ -15,16 +14,16 @@ import InputText from 'primevue/inputtext';
 import Toast from 'primevue/toast';
 import DynamicDialog from 'primevue/dynamicdialog';
 
-const utilities = useUtilities()
-const useBookmarksComposable = useBookmarks()
+const utilities = useUtilities();
+const useBookmarksComposable = useBookmarks();
 const dialog = useDialog();
 
 const searchBookmark = ref('');
 const sideMenuOpen = ref(true);
-const selectedTags = ref<string[]>([])
+const selectedTags = ref<string[]>([]);
 
 const onTagsChanged = (tags: string[]) => {
-    selectedTags.value = tags
+  selectedTags.value = tags;
 }
 
 const toggleSideMenu = () => {

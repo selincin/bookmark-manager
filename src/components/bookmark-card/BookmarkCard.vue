@@ -15,23 +15,22 @@ import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 
-
 const toast = useToast();
 const bookmarkStore = useBookmarkStore();
 const useBookmarksComposable = useBookmarks()
 const dialog = useDialog();
 const dateTimeComposable = useDateTime();
 
+const menu = ref();
+
 const props = defineProps<{
   bookmark: Bookmark
 }>()
 
-const menu = ref();
 
 const currentBookmark = computed(() => {
     return bookmarkStore.bookmarks.find((b) => b.id === props.bookmark.id)
 })
-
 
 const items = computed(() => [
     {
@@ -69,7 +68,6 @@ const items = computed(() => [
         ]
     }
 ]);
-
 
 const toggle = (event: Event) => {
     menu.value.toggle(event);
@@ -134,8 +132,7 @@ const BookmarkTag = () => {
         <div class="card-top flex justify-between items-center gap-4">
             <div class="flex items-center gap-4">
                 <div class="shrink-0">
-                    <img :src="getFavicon(bookmark?.url)" alt="favicon" class="w-8 h-8 rounded-full" @error="(e) => (e.target as HTMLImageElement).src = 'https://placehold.co/32x32'"
-/>
+                    <img :src="getFavicon(bookmark?.url)" alt="favicon" class="w-8 h-8 rounded-full" @error="(e) => (e.target as HTMLImageElement).src = 'https://placehold.co/32x32'"/>
                 </div>
                 <div class="flex flex-col">
                     <div class="font-bold text-xl bookmark-title"> {{bookmark?.title}} </div>

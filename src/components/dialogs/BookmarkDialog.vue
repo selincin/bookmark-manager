@@ -4,25 +4,24 @@ import { useBookmarks } from '@/composables/useBookmarksComposable';
 
 import type Bookmark from '@/models/Bookmark';
 
-// import InputTags from 'primevue/inputtags';
 import FloatLabel from 'primevue/floatlabel';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const injectedData = inject('dialogRef') as any
-const useBookmarksComposable = useBookmarks()
+const injectedData = inject('dialogRef') as any;
+const useBookmarksComposable = useBookmarks();
 
-const bookmark = ref<Bookmark | null>(null)
-const originalBookmark = ref<Bookmark | null>(null)
-const updating = ref<boolean>(false)
-const buttonLocked = ref<boolean>(true)
+const bookmark = ref<Bookmark | null>(null);
+const originalBookmark = ref<Bookmark | null>(null);
+const updating = ref<boolean>(false);
+const buttonLocked = ref<boolean>(true);
 
-const inputTitleInvalid = ref<boolean>(false)
-const inputDescriptionInvalid = ref<boolean>(false)
-const inputUrlInvalid = ref<boolean>(false)
-const mode = ref<'add' | 'edit'>('add')
+const inputTitleInvalid = ref<boolean>(false);
+const inputDescriptionInvalid = ref<boolean>(false);
+const inputUrlInvalid = ref<boolean>(false);
+const mode = ref<'add' | 'edit'>('add');
 
 onMounted(() => {
     mode.value = injectedData.value.data.mode
@@ -38,8 +37,6 @@ onMounted(() => {
 
 const changesDetected = () => {
     if (!bookmark.value) return
-        console.log('tag:', bookmark.value.tag)
-        console.log('original tag:', originalBookmark.value?.tag)
 
     if (
         bookmark.value?.title === originalBookmark.value?.title &&
@@ -73,11 +70,11 @@ const submit = async () => {
     }
 
     updating.value = false
-    injectedData.value.close()
+    closeDialog()
 }
 
 const closeDialog = () => {
-    injectedData.value.close()
+    injectedData.value.close();
 }
 </script>
 

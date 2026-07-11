@@ -6,15 +6,15 @@ import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import BookmarkCard from '@/components/bookmark-card/BookmarkCard.vue'
 
-const bookmarkStore = useBookmarkStore()
+const bookmarkStore = useBookmarkStore();
 
 const props = defineProps<{
     searchTerm: string
     selectedTags: string[]
-}>()
+}>();
 
-const sortMenu = ref()
-const sortBy = ref('recently_added')
+const sortMenu = ref();
+const sortBy = ref('recently_added');
 
 const sortOptions = computed(() => [
     {
@@ -50,7 +50,7 @@ const sortedBookmarks = computed(() => {
         if (sortBy.value === 'most_visited') {
             return (b.visit_count ?? 0) - (a.visit_count ?? 0)
         }
-        // recently_added + pinned zuerst
+
         if (a.pinned && !b.pinned) return -1
         if (!a.pinned && b.pinned) return 1
         if (a.pinned && b.pinned) {

@@ -13,8 +13,6 @@ const headers = {
     'Content-Type': 'application/json'
 }
 
-const loading = ref(false)
-
 export function useBookmarks() {
     const bookmarkStore = useBookmarkStore()
 
@@ -46,7 +44,6 @@ export function useBookmarks() {
 
         bookmarkStore.bookmarks = result.data as Bookmark[];
         bookmarkStore.loading = false;
-        console.log('Bookmarks:', bookmarkStore.bookmarks);
     }
 
     const createBookmark = async (bookmark: Bookmark) => {
