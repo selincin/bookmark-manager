@@ -10,7 +10,8 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 
 
-const injectedData = inject('dialogRef');
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const injectedData = inject('dialogRef') as any
 const useBookmarksComposable = useBookmarks()
 
 const bookmark = ref<Bookmark | null>(null)
