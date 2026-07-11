@@ -4,7 +4,8 @@ A modern, responsive bookmark management app built with Vue 3 and TypeScript. Th
 
 ## 🌐 Live Demo
 
-Deployed with [Vercel](https://vercel.com) – [Bookmark Manager](https://bookmark-manager-n6walzl7m-selincin.vercel.app/)
+[Bookmark Manager](https://bookmark-manager-selincin.vercel.app/)
+Deployed with [Vercel]
 
 ## 🎯 Challenge
 
@@ -14,7 +15,7 @@ This project is based on the [Bookmark Manager App](https://www.frontendmentor.i
 
 - 📌 Pin & unpin bookmarks (pinned bookmarks always appear first)
 - 🗃️ Archive & restore bookmarks
-- ✏️ Create, edit and delete bookmarks
+- ✏️ Create, edit bookmarks
 - 🔍 Search bookmarks by title, description or tag
 - 🏷️ Filter bookmarks by tags via sidebar
 - 🔃 Sort bookmarks by recently added, recently visited or most visited
