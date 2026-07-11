@@ -8,7 +8,7 @@ import { useDateTime } from '../../composables/dateComposable';
 
 import type Bookmark from '../../models/Bookmark';
 
-import EditBookmark from '../dialogs/editBookmark.vue';
+import BookmarkDialog from '../dialogs/BookmarkDialog.vue';
 
 import Divider from 'primevue/divider';
 import Menu from 'primevue/menu';
@@ -51,11 +51,13 @@ const items = computed(() => [
             },
             { 
                 label: currentBookmark.value?.pinned ? 'Unpin' : 'Pin', 
+                visible: !currentBookmark.value?.archived,
                 icon: 'pi pi-thumbtack',
                 command: () => pinBookmark(props.bookmark.id)   
             },
             { 
                 label: 'Edit', 
+                visible: !currentBookmark.value?.archived,
                 icon: 'pi pi-pencil',
                 command: () => editBookmark()
             },
@@ -92,8 +94,9 @@ const pinBookmark = (id: number) => {
 }
 
 const editBookmark = () => {
-    dialog.open(EditBookmark, {
+    dialog.open(BookmarkDialog, {
         data: {
+            mode: 'edit',
             bookmark: props.bookmark,
         },
         props: {
@@ -131,7 +134,8 @@ const BookmarkTag = () => {
         <div class="card-top flex justify-between items-center gap-4">
             <div class="flex items-center gap-4">
                 <div class="shrink-0">
-                    <img :src="getFavicon(bookmark?.url)" alt="favicon" class="w-8 h-8 rounded-full"/>
+                    <img :src="getFavicon(bookmark?.url)" alt="favicon" class="w-8 h-8 rounded-full" @error="(e) => (e.target as HTMLImageElement).src = 'https://placehold.co/32x32'"
+/>
                 </div>
                 <div class="flex flex-col">
                     <div class="font-bold text-xl bookmark-title"> {{bookmark?.title}} </div>
@@ -180,8 +184,8 @@ const BookmarkTag = () => {
 <style scoped lang="scss">
 .bookmark-card-container {
     border: 1px solid rgb(221, 218, 218);
-    width: 20rem;
     height: 18rem;
+    width: 20rem; 
     border-radius: 1rem;
     padding: 1rem;
     background-color: #ffff;
@@ -207,5 +211,12 @@ const BookmarkTag = () => {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .bookmark-card-container {
+        width: 100%;
+
+    }
 }
 </style>

@@ -12,49 +12,47 @@ dayjs.extend(localeData);
 dayjs.extend(advancedFormat);
 
 export function useDateTime() {
-    const formatRelative = (dateTimeString): String => {
-        const now = dayjs();
-        const dateTime = dayjs(dateTimeString);
-        const diffInMinutes = now.diff(dateTime, 'minute');
-        const diffInHours = now.diff(dateTime, 'hour');
+    type DateInput = string | Date | number | undefined | null
 
-        if(!dateTime.isValid()) {
-            console.error("Invalid date: " + dateTimeString);
-            return "";
+    const formatRelative = (dateTimeInput?: DateInput): string => {
+        if (!dateTimeInput) return ''
+
+        const now = dayjs()
+        const dateTime = dayjs(dateTimeInput)
+
+        if (!dateTime.isValid()) {
+            console.error('Invalid date:', dateTimeInput)
+            return ''
         }
 
+        const diffInMinutes = now.diff(dateTime, 'minute')
+        const diffInHours = now.diff(dateTime, 'hour')
+
         if (diffInMinutes < 60) {
-            if (diffInMinutes < 1) {
-                return "now";
-            }
-            if (diffInMinutes === 1) {
-                return "1 minute ago";
-            }
-            return `${diffInMinutes} minutes ago`;
+            if (diffInMinutes < 1) return 'now'
+            if (diffInMinutes === 1) return '1 minute ago'
+            return `${diffInMinutes} minutes ago`
         }
 
         if (dateTime.isToday()) {
-            if (diffInHours === 1) {
-                return "1 hour ago";
-            }
-            return `${diffInHours} hours ago`;
+            if (diffInHours === 1) return '1 hour ago'
+            return `${diffInHours} hours ago`
         }
 
-        if (dateTime.isYesterday()) {
-            return "yesterday";
-        }
+        if (dateTime.isYesterday()) return 'yesterday'
 
-        return dateTime.format('DD. MMM');
-    };
+        return dateTime.format('DD. MMM')
+    }
 
-    const formatDateDDMM = (dateTimeString) => {
-        const dateTime = dayjs(dateTimeString);
-        return dateTime.format('DD. MMM');
-    };
-
+    const formatDateDDMM = (dateTimeInput?: DateInput): string => {
+        if (!dateTimeInput) return ''
+        const dateTime = dayjs(dateTimeInput)
+        if (!dateTime.isValid()) return ''
+        return dateTime.format('DD. MMM')
+    }
 
     return {
         formatRelative,
         formatDateDDMM,
-    };
+    }
 }

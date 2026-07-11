@@ -1,13 +1,21 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router'
+
+import { useBookmarkStore } from '../../store/bookmarks';
 
 import Button from 'primevue/button';
 import Divider from 'primevue/divider';
 import Menu from 'primevue/menu';
+import Checkbox from 'primevue/checkbox'
 
+
+const bookmarkStore = useBookmarkStore()
 const router = useRouter()
+const route = useRoute()
 
+const selectedTags = ref<string[]>([])
 const items = ref([
     {
         label: 'Home',
@@ -27,15 +35,18 @@ const items = ref([
 const props = defineProps<{
     isOpen: boolean
 }>()
-
 const emit = defineEmits<{
-    close: []
+    close: [],
+    tagsChanged: [tags: string[]]
 }>()
 
-
-
-onMounted(() => {
-});
+const availableTags = computed(() => {
+    const tags = bookmarkStore.bookmarks
+        .flatMap(b => b.tag?.split(',') ?? [])
+        .map(t => t.trim())
+        .filter(Boolean)
+    return [...new Set(tags)]
+})
 
 </script>
 
@@ -48,13 +59,23 @@ onMounted(() => {
         <Divider class="mt-0!" />
         <Menu :model="items" :pt="{
             root: {
-                class: 'border-none!'
+                class: 'border-none! bg-transparent!'
             },
             itemLink: {
                 class: 'pl-2!'
             }
-    }" />
+        }" />
+        <div v-if="route.name !== 'archived'"  class="flex flex-col gap-2 px-2">
+            <Divider class="mt-0!" />
+            <div class="font-semibold text-sm">Tags</div>
+            <div v-for="tag in availableTags" :key="tag" class="flex items-center justify-between gap-2">
+                <label :for="tag" class="text-sm cursor-pointer">{{ tag }}</label>
+                <Checkbox v-model="selectedTags" :value="tag" :inputId="tag"
+                    @change="emit('tagsChanged', selectedTags)" />
+            </div>
+        </div>
     </div>
+
 </template>
 
 <style scoped lang="scss"></style>

@@ -11,7 +11,15 @@ const archivedBookmarks = computed(() =>
 </script>
 
 <template>
-  <div class="flex flex-wrap p-5 gap-4 overflow-y-auto">
-    <BookmarkCard v-for="bookmark in archivedBookmarks" :key="bookmark.id" :bookmark="bookmark"/>
+  <div class="flex flex-col h-full overflow-hidden">
+    <div class="flex justify-between px-5 pt-5 shrink-0 items-start">
+      <div class="font-semibold">Archived bookmarks</div>
+    </div>
+    <!-- Cards -->
+    <div class="flex flex-wrap p-5 gap-4 overflow-y-auto">
+      <div v-for="bookmark in archivedBookmarks" :key="bookmark.id" class="opacity-60 grayscale">
+        <BookmarkCard :bookmark="bookmark" />
+      </div>
+    </div>
   </div>
 </template>

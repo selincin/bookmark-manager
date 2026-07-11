@@ -48,7 +48,22 @@ export function useBookmarks() {
         bookmarkStore.loading = false;
         console.log('Bookmarks:', bookmarkStore.bookmarks);
     }
-    
+
+    const createBookmark = async (bookmark: Bookmark) => {
+        try {
+            const response = await axios.post('/rest/v1/bookmarks', bookmark, {
+                baseURL: BASE_URL,
+                headers
+            })
+
+            if (response.status) {
+                bookmarkStore.bookmarks.push(bookmark)
+            }
+        } catch (error) {
+            console.log('Error creating bookmark:', error)
+        }
+    }
+
     const archiveBookmark = async (id: number) => {
         const bookmark = bookmarkStore.bookmarks.find((b) => b.id === id)
         if (!bookmark) return
@@ -93,23 +108,28 @@ export function useBookmarks() {
         bookmark.visit_count = newCount
     }
 
-    const updateBookmark = async (bookmark: Bookmark) => {
+ const updateBookmark = async (bookmark: Bookmark) => {
     try {
+        const updatedAt = new Date().toISOString()
+        
         await axios.patch(`/rest/v1/bookmarks?id=eq.${Number(bookmark.id)}`,
             {
                 title: bookmark.title,
                 description: bookmark.description,
-                url: bookmark.url
+                url: bookmark.url,
+                tag: bookmark.tag,
+                updated_at: updatedAt
             },
             { baseURL: BASE_URL, headers }
         )
 
-        const index = bookmarkStore.bookmarks.findIndex(b => b.id === bookmark.id)
-        if (index !== -1) {
-            bookmarkStore.bookmarks[index] = { 
-                ...bookmarkStore.bookmarks[index], 
-                ...bookmark 
-            }
+        const bookmarkToUpdate = bookmarkStore.bookmarks.find(b => b.id === bookmark.id)
+        if (bookmarkToUpdate) {
+            bookmarkToUpdate.title = bookmark.title
+            bookmarkToUpdate.description = bookmark.description
+            bookmarkToUpdate.url = bookmark.url
+            bookmarkToUpdate.tag = bookmark.tag
+            bookmarkToUpdate.updated_at = updatedAt
         }
     } catch (error) {
         console.log('error: ', error)
@@ -118,6 +138,7 @@ export function useBookmarks() {
 
     return {
         loadBookmarks,
+        createBookmark,
         archiveBookmark,
         togglePin,
         visitBookmark,

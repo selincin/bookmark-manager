@@ -2,10 +2,13 @@
 import { inject, onMounted, ref } from 'vue';
 import { useBookmarks } from '@/composables/useBookmarksComposable';
 
+import type Bookmark from '@/models/Bookmark';
+
+// import InputTags from 'primevue/inputtags';
 import FloatLabel from 'primevue/floatlabel';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
-import type Bookmark from '@/models/Bookmark';
+
 
 const injectedData = inject('dialogRef');
 const useBookmarksComposable = useBookmarks()
@@ -18,17 +21,30 @@ const buttonLocked = ref<boolean>(true)
 const inputTitleInvalid = ref<boolean>(false)
 const inputDescriptionInvalid = ref<boolean>(false)
 const inputUrlInvalid = ref<boolean>(false)
+const mode = ref<'add' | 'edit'>('add')
 
 onMounted(() => {
-    originalBookmark.value = { ...injectedData.value.data.bookmark }
-    bookmark.value = { ...injectedData.value.data.bookmark }
+    mode.value = injectedData.value.data.mode
+
+    if (mode.value === 'edit') {
+        originalBookmark.value = { ...injectedData.value.data.bookmark }
+        bookmark.value = { ...injectedData.value.data.bookmark }
+    } else {
+        bookmark.value = {} as Bookmark
+        buttonLocked.value = false
+    }
 })
 
 const changesDetected = () => {
+    if (!bookmark.value) return
+        console.log('tag:', bookmark.value.tag)
+        console.log('original tag:', originalBookmark.value?.tag)
+
     if (
         bookmark.value?.title === originalBookmark.value?.title &&
         bookmark.value?.description === originalBookmark.value?.description &&
-        bookmark.value?.url === originalBookmark.value?.url
+        bookmark.value?.url === originalBookmark.value?.url &&
+        bookmark.value?.tag === originalBookmark.value?.tag
     ) {
         buttonLocked.value = true
         return
@@ -49,7 +65,12 @@ const changesDetected = () => {
 const submit = async () => {
     if (!bookmark.value) return
     updating.value = true
-    await useBookmarksComposable.updateBookmark(bookmark.value)
+    if (mode.value === 'edit') {
+        await useBookmarksComposable.updateBookmark(bookmark.value)
+    } else {
+        await useBookmarksComposable.createBookmark(bookmark.value)
+    }
+
     updating.value = false
     injectedData.value.close()
 }
@@ -63,7 +84,7 @@ const closeDialog = () => {
     <div v-if="bookmark" class="flex flex-col gap-4 pt-4">
         <FloatLabel variant="on">
             <InputText id="title" v-model="bookmark.title" @input="changesDetected" autocomplete="off"
-                :placeholder="(bookmark?.title ?? '') === '' ? 'Title' : ''" class="w-full"
+                :placeholder="bookmark?.title ?? ''" class="w-full"
                 :invalid="inputTitleInvalid" />
             <label for="title">Title</label>
             <small v-if="inputTitleInvalid" class="text-red-500">Min. 3 Zeichen</small>
@@ -71,15 +92,20 @@ const closeDialog = () => {
 
         <FloatLabel variant="on">
             <InputText id="description" v-model="bookmark.description" @input="changesDetected" autocomplete="off"
-                :placeholder="(bookmark?.description ?? '') === '' ? 'Description' : ''" class="w-full"
+                :placeholder="bookmark?.description ?? ''" class="w-full"
                 :invalid="inputDescriptionInvalid" />
             <label for="description">Description</label>
             <small v-if="inputDescriptionInvalid" class="text-red-500">Min. 3 Zeichen</small>
         </FloatLabel>
 
         <FloatLabel variant="on">
+            <InputText id="tag" v-model="bookmark.tag" :placeholder="bookmark?.tag ?? ''" @input="changesDetected" autocomplete="off" class="w-full" />
+            <label for="tag">Tag</label>
+        </FloatLabel>
+
+        <FloatLabel variant="on">
             <InputText id="url" v-model="bookmark.url" @input="changesDetected" autocomplete="off"
-                :placeholder="(bookmark?.url ?? '') === '' ? 'Website URL' : ''" class="w-full"
+                :placeholder="bookmark?.url ?? ''" class="w-full"
                 :invalid="inputUrlInvalid" />
             <label for="url">Website URL</label>
             <small v-if="inputUrlInvalid" class="text-red-500">Gültige URL eingeben</small>
@@ -87,9 +113,9 @@ const closeDialog = () => {
 
         <div class="flex justify-end gap-2 pt-3">
             <Button label="Cancel" outlined @click="closeDialog()" :disabled="updating" />
-            <Button label="Save"
+            <Button :label="mode === 'edit' ? 'Save' : 'Add'"
                 :disabled="buttonLocked || updating || inputTitleInvalid || inputDescriptionInvalid || inputUrlInvalid"
-                :icon="updating ? 'pi pi-spin pi-spinner' : 'pi pi-check'" @click="submit" />
+                :icon="updating ? 'pi pi-spin pi-spinner' : 'pi pi-check'" @click="submit()" />
         </div>
     </div>
 </template>
