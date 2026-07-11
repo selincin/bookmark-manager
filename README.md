@@ -5,7 +5,7 @@ A modern, responsive bookmark management app built with Vue 3 and TypeScript. Th
 ## 🌐 Live Demo
 
 [Bookmark Manager](https://bookmark-manager-selincin.vercel.app/)
-Deployed with [Vercel]
+Deployed with Vercel
 
 ## 🎯 Challenge
 
