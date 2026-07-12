@@ -1,0 +1,52 @@
+{
+  "BOOKMARK_MANAGER": {
+    "TITLE": "Bookmark Manager",
+    "SEARCH": "Search",
+    "ADD_BOOKMARK": "Add bookmark",
+    "MENU": {
+      "HOME": "Home",
+      "ARCHIVED": "Archived",
+      "TAGS": "Tags"
+    },
+    "DASHBOARD": {
+      "HEADING": "All bookmarks",
+      "SORT_BY": "Sort by",
+      "RECENTLY_ADDED": "Recently added",
+      "RECENTLY_VISITED": "Recently visited",
+      "MOST_VISITED": "Most visited",
+      "NO_RESULTS": "No results found",
+      "ALL_LOADED": "All bookmarks loaded"
+    },
+    "ARCHIVED": {
+      "HEADING": "Archived bookmarks"
+    },
+    "BOOKMARK_CARD": {
+      "VISIT": "Open",
+      "COPY_URL": "Copy URL",
+      "UNPIN": "Unpin",
+      "PIN": "Pin",
+      "EDIT": "Edit",
+      "RESTORE": "Restore",
+      "ARCHIVE": "Archive",
+      "COPIED": "Copied to clipboard",
+      "COPY_ERROR": "Error copying"
+    },
+    "DIALOG": {
+      "ADD_TITLE": "Add bookmark",
+      "EDIT_TITLE": "Edit bookmark",
+      "ADD_DESCRIPTION": "Save a link with details to organize your collection.",
+      "EDIT_DESCRIPTION": "Save a link with details to organize your collection.",
+      "TITLE_FIELD": "Title",
+      "DESCRIPTION_FIELD": "Description",
+      "TAG_FIELD": "Tag",
+      "URL_FIELD": "Website URL",
+      "CANCEL": "Cancel",
+      "SAVE": "Save",
+      "ADD": "Add",
+      "VALIDATION": {
+        "MIN_CHARS": "Min. 3 characters",
+        "VALID_URL": "Enter a valid URL"
+      }
+    }
+  }
+}

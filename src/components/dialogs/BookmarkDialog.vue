@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useBookmarks } from '@/composables/useBookmarksComposable';
 
 import type Bookmark from '@/models/Bookmark';
@@ -13,6 +14,7 @@ import Textarea from 'primevue/textarea';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const injectedData = inject('dialogRef') as any;
 const useBookmarksComposable = useBookmarks();
+const { t } = useI18n();
 
 const bookmark = ref<Bookmark | null>(null);
 const originalBookmark = ref<Bookmark | null>(null);
@@ -35,6 +37,9 @@ onMounted(() => {
         buttonLocked.value = false
     }
 })
+
+const dialogTitle = computed(() => mode.value === 'edit' ? t('BOOKMARK_MANAGER.DIALOG.EDIT_TITLE') : t('BOOKMARK_MANAGER.DIALOG.ADD_TITLE'))
+const dialogDescription = computed(() => mode.value === 'edit' ? t('BOOKMARK_MANAGER.DIALOG.EDIT_DESCRIPTION') : t('BOOKMARK_MANAGER.DIALOG.ADD_DESCRIPTION'))
 
 const changesDetected = () => {
     if (!bookmark.value) return
@@ -83,8 +88,8 @@ const closeDialog = () => {
     <div v-if="bookmark" class="flex flex-col gap-4 pt-4">
      <div class="dialog-header flex justify-between py-3">
         <div>
-            <div class="text-xl font-bold">Edit Bookmark</div>
-            <div>Save a link with details to keep your collection organized.</div>
+            <div class="text-xl font-bold">{{ dialogTitle }}</div>
+            <div>{{ dialogDescription }}</div>
         </div>
         <Button iconOnly rounded variant="text"  icon="pi pi-times" @click="closeDialog()"/>
      </div>
@@ -92,8 +97,8 @@ const closeDialog = () => {
             <InputText id="title" v-model="bookmark.title" @input="changesDetected" autocomplete="off"
                 :placeholder="bookmark?.title ?? ''" class="w-full"
                 :invalid="inputTitleInvalid" />
-            <label for="title">Title</label>
-            <small v-if="inputTitleInvalid" class="text-red-500">Min. 3 Zeichen</small>
+            <label for="title">{{ t('BOOKMARK_MANAGER.DIALOG.TITLE_FIELD') }}</label>
+            <small v-if="inputTitleInvalid" class="text-red-500">{{ t('BOOKMARK_MANAGER.DIALOG.VALIDATION.MIN_CHARS') }}</small>
         </FloatLabel>
 
         <FloatLabel variant="on">
@@ -101,26 +106,26 @@ const closeDialog = () => {
                 :placeholder="bookmark?.description ?? ''" class="w-full"
                 :invalid="inputDescriptionInvalid" rows="5" size="large" resize-none/>
 
-            <label for="description">Description</label>
-            <small v-if="inputDescriptionInvalid" class="text-red-500">Min. 3 Zeichen</small>
+            <label for="description">{{ t('BOOKMARK_MANAGER.DIALOG.DESCRIPTION_FIELD') }}</label>
+            <small v-if="inputDescriptionInvalid" class="text-red-500">{{ t('BOOKMARK_MANAGER.DIALOG.VALIDATION.MIN_CHARS') }}</small>
         </FloatLabel>
 
         <FloatLabel variant="on">
             <InputText id="tag" v-model="bookmark.tag" :placeholder="bookmark?.tag ?? ''" @input="changesDetected" autocomplete="off" class="w-full" />
-            <label for="tag">Tag</label>
+            <label for="tag">{{ t('BOOKMARK_MANAGER.DIALOG.TAG_FIELD') }}</label>
         </FloatLabel>
 
         <FloatLabel variant="on">
             <InputText id="url" v-model="bookmark.url" @input="changesDetected" autocomplete="off"
                 :placeholder="bookmark?.url ?? ''" class="w-full"
                 :invalid="inputUrlInvalid" />
-            <label for="url">Website URL</label>
-            <small v-if="inputUrlInvalid" class="text-red-500">Gültige URL eingeben</small>
+            <label for="url">{{ t('BOOKMARK_MANAGER.DIALOG.URL_FIELD') }}</label>
+            <small v-if="inputUrlInvalid" class="text-red-500">{{ t('BOOKMARK_MANAGER.DIALOG.VALIDATION.VALID_URL') }}</small>
         </FloatLabel>
 
         <div class="flex justify-end gap-2 pt-3">
-            <Button label="Cancel" outlined @click="closeDialog()" :disabled="updating" />
-            <Button :label="mode === 'edit' ? 'Save' : 'Add'"
+            <Button :label="t('BOOKMARK_MANAGER.DIALOG.CANCEL')" outlined @click="closeDialog()" :disabled="updating" />
+            <Button :label="mode === 'edit' ? t('BOOKMARK_MANAGER.DIALOG.SAVE') : t('BOOKMARK_MANAGER.DIALOG.ADD')"
                 :disabled="buttonLocked || updating || inputTitleInvalid || inputDescriptionInvalid || inputUrlInvalid"
                 :icon="updating ? 'pi pi-spin pi-spinner' : 'pi pi-check'" @click="submit()" />
         </div>

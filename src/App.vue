@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useUtilities } from './composables/utilityComposable';
 import { useBookmarks } from './composables/useBookmarksComposable';
 import { useDialog } from 'primevue/usedialog';
@@ -17,6 +18,7 @@ import DynamicDialog from 'primevue/dynamicdialog';
 const utilities = useUtilities();
 const useBookmarksComposable = useBookmarks();
 const dialog = useDialog();
+const { t } = useI18n();
 
 const searchBookmark = ref('');
 const sideMenuOpen = ref(true);
@@ -63,9 +65,9 @@ const addBookmark = () => {
           <InputGroupAddon>
             <i class="pi pi-search"></i>
           </InputGroupAddon>
-          <InputText v-model="searchBookmark" placeholder="Search" class="w-full md:max-w-80"/>
+          <InputText v-model="searchBookmark" :placeholder="t('BOOKMARK_MANAGER.SEARCH')" class="w-full md:max-w-80"/>
         </InputGroup>
-        <Button :label="utilities.isMobile.value ? '' : 'Add bookmark'" icon="pi pi-plus"
+        <Button :label="utilities.isMobile.value ? '' : t('BOOKMARK_MANAGER.ADD_BOOKMARK')" icon="pi pi-plus"
           class="shrink-0 whitespace-nowrap" @click="addBookmark()" />
         </div>
       <!-- content area -->

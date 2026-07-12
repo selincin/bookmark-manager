@@ -5,6 +5,7 @@ import { useDialog } from 'primevue/usedialog';
 import { useBookmarkStore } from '@/store/bookmarks';
 import { useBookmarks } from '../../composables/useBookmarksComposable'
 import { useDateTime } from '../../composables/dateComposable';
+import { useI18n } from 'vue-i18n'
 
 import type Bookmark from '../../models/Bookmark';
 
@@ -15,6 +16,8 @@ import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 
+
+const { t } = useI18n()
 const toast = useToast();
 const bookmarkStore = useBookmarkStore();
 const useBookmarksComposable = useBookmarks()
@@ -36,7 +39,7 @@ const items = computed(() => [
     {
         items: [
             { 
-                label: 'Visit', 
+                label: t('BOOKMARK_MANAGER.BOOKMARK_CARD.VISIT'), 
                 icon: 'pi pi-fw pi-external-link',
                 command: () => {
                     useBookmarksComposable.visitBookmark(props.bookmark.id)
@@ -44,24 +47,24 @@ const items = computed(() => [
                 }  
             },
             { 
-                label: 'Copy URL', 
+                label: t('BOOKMARK_MANAGER.BOOKMARK_CARD.COPY_URL'), 
                 icon: 'pi pi-fw pi-copy',
                 command: () => copyToClipboard(props.bookmark.url)
             },
             { 
-                label: currentBookmark.value?.pinned ? 'Unpin' : 'Pin', 
+                label: currentBookmark.value?.pinned ? t('BOOKMARK_MANAGER.BOOKMARK_CARD.UNPIN') : t('BOOKMARK_MANAGER.BOOKMARK_CARD.PIN'), 
                 visible: !currentBookmark.value?.archived,
                 icon: 'pi pi-thumbtack',
                 command: () => pinBookmark(props.bookmark.id)   
             },
             { 
-                label: 'Edit', 
+                label: t('BOOKMARK_MANAGER.BOOKMARK_CARD.EDIT'), 
                 visible: !currentBookmark.value?.archived,
                 icon: 'pi pi-pencil',
                 command: () => editBookmark()
             },
             { 
-                label: currentBookmark.value?.archived ? 'Restore' : 'Archive', 
+                label: currentBookmark.value?.archived ? t('BOOKMARK_MANAGER.BOOKMARK_CARD.RESTORE') : t('BOOKMARK_MANAGER.BOOKMARK_CARD.ARCHIVE'), 
                 icon: 'pi pi-box',
                 command: () => archiveBookmark(props.bookmark.id)
             },
@@ -76,10 +79,10 @@ const toggle = (event: Event) => {
 const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url)
         .then(() => {
-            toast.add({ severity: 'success', summary: 'Copied to clipboard', detail: url, life: 3000 });
+            toast.add({ severity: 'success', summary: t('BOOKMARK_MANAGER.BOOKMARK_CARD.COPIED'), detail: url, life: 3000 });
         })
         .catch((err) => {
-            toast.add({ severity: 'error', summary: 'Error copying to clipboard', detail: err.message, life: 3000 });
+            toast.add({ severity: 'error', summary: t('BOOKMARK_MANAGER.BOOKMARK_CARD.COPY_ERROR'), detail: err.message, life: 3000 });
         });
 };
 

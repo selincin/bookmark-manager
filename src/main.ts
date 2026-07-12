@@ -4,6 +4,7 @@ import 'primeicons/primeicons.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { definePreset } from '@primeuix/themes'
+import { i18n } from './i18n'
 
 import Aura from '@primeuix/themes/aura'
 import App from './App.vue'
@@ -45,6 +46,7 @@ app.use(PrimeVue, {
 app.use(ToastService)
 app.use(DialogService)
 app.use(router)
+app.use(i18n)
 app.mount('#app')
 
 

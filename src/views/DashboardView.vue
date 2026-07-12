@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useBookmarkStore } from '@/store/bookmarks'
 import { useBookmarks } from '@/composables/useBookmarksComposable'
 import { useIntersectionObserver } from '@vueuse/core';
@@ -10,6 +11,7 @@ import BookmarkCard from '@/components/bookmark-card/BookmarkCard.vue'
 
 const bookmarkStore = useBookmarkStore();
 const bookMarksComposable = useBookmarks()
+const { t } = useI18n()
 
 const props = defineProps<{
   searchTerm: string
@@ -31,17 +33,17 @@ const sortOptions = computed(() => [
   {
     items: [
       {
-        label: 'Recently added',
+        label: t('BOOKMARK_MANAGER.DASHBOARD.RECENTLY_ADDED'),
         icon: sortBy.value === 'recently_added' ? 'pi pi-check' : '',
         command: () => sortBy.value = 'recently_added'
       },
       {
-        label: 'Recently visited',
+        label: t('BOOKMARK_MANAGER.DASHBOARD.RECENTLY_VISITED'),
         icon: sortBy.value === 'recently_visited' ? 'pi pi-check' : '',
         command: () => sortBy.value = 'recently_visited'
       },
       {
-        label: 'Most visited',
+        label: t('BOOKMARK_MANAGER.DASHBOARD.MOST_VISITED'),
         icon: sortBy.value === 'most_visited' ? 'pi pi-check' : '',
         command: () => sortBy.value = 'most_visited'
       },
@@ -94,7 +96,7 @@ const filteredBookmarks = computed(() => {
   <div class="flex flex-col h-full overflow-hidden">
     <!-- Sort Header -->
     <div class="flex justify-between px-5 pt-5 shrink-0 items-start">
-      <div class="font-semibold dark:text-white text-2xl">All bookmarks</div>
+      <div class="font-semibold dark:text-white text-2xl">{{ t('BOOKMARK_MANAGER.DASHBOARD.HEADING') }}</div>
       <div>
         <Menu 
           ref="sortMenu" 
@@ -106,7 +108,7 @@ const filteredBookmarks = computed(() => {
             }
         }" 
           />
-        <Button label="Sort by" icon="pi pi-sort-alt" @click="toggleSortMenu"   :pt="{
+        <Button :label="t('BOOKMARK_MANAGER.DASHBOARD.SORT_BY')" icon="pi pi-sort-alt" @click="toggleSortMenu"   :pt="{
             root: {
                 class: 'bg-none!'
             }
@@ -116,7 +118,7 @@ const filteredBookmarks = computed(() => {
     <!-- Cards -->
     <div class="flex flex-wrap p-5 gap-4 overflow-y-auto content-area">
       <BookmarkCard v-for="bookmark in filteredBookmarks" :key="bookmark.id" :bookmark="bookmark" />
-      <div v-if="filteredBookmarks.length == 0" class="dark:text-white">No results found</div>
+      <div v-if="filteredBookmarks.length == 0" class="dark:text-white">{{ t('BOOKMARK_MANAGER.DASHBOARD.NO_RESULTS') }}</div>
       <!-- trigger element -->
       <div ref="sentinel" class="w-full h-1 observer"></div>
       <!-- Loading Indicator -->
@@ -125,7 +127,7 @@ const filteredBookmarks = computed(() => {
       </div>
       <div v-if="!bookmarkStore.hasMore && filteredBookmarks.length > 0"
         class="w-full text-center text-gray-400 py-4 text-sm">
-        All bookmarks loaded
+        {{ t('BOOKMARK_MANAGER.DASHBOARD.ALL_LOADED') }}
       </div>
     </div>
   </div>

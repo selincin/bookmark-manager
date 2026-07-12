@@ -1,0 +1,52 @@
+{
+  "BOOKMARK_MANAGER": {
+    "TITLE": "Lesezeichen Manager",
+    "SEARCH": "Suchen",
+    "ADD_BOOKMARK": "Lesezeichen hinzufügen",
+    "MENU": {
+      "HOME": "Startseite",
+      "ARCHIVED": "Archiviert",
+      "TAGS": "Stichwörter"
+    },
+    "DASHBOARD": {
+      "HEADING": "Alle Lesezeichen",
+      "SORT_BY": "Sortieren nach",
+      "RECENTLY_ADDED": "Kürzlich hinzugefügt",
+      "RECENTLY_VISITED": "Kürzlich besucht",
+      "MOST_VISITED": "Am häufigsten besucht",
+      "NO_RESULTS": "Keine Ergebnisse gefunden",
+      "ALL_LOADED": "Alle Lesezeichen geladen"
+    },
+    "ARCHIVED": {
+      "HEADING": "Archivierte Lesezeichen"
+    },
+    "BOOKMARK_CARD": {
+      "VISIT": "Öffnen",
+      "COPY_URL": "URL kopieren",
+      "UNPIN": "Anheften aufheben",
+      "PIN": "Anheften",
+      "EDIT": "Bearbeiten",
+      "RESTORE": "Wiederherstellen",
+      "ARCHIVE": "Archivieren",
+      "COPIED": "In die Zwischenablage kopiert",
+      "COPY_ERROR": "Fehler beim Kopieren"
+    },
+    "DIALOG": {
+      "ADD_TITLE": "Lesezeichen hinzufügen",
+      "EDIT_TITLE": "Lesezeichen bearbeiten",
+      "ADD_DESCRIPTION": "Speichere einen Link mit Details, um deine Sammlung zu ordnen.",
+      "EDIT_DESCRIPTION": "Speichere einen Link mit Details, um deine Sammlung zu ordnen.",
+      "TITLE_FIELD": "Titel",
+      "DESCRIPTION_FIELD": "Beschreibung",
+      "TAG_FIELD": "Stichwort",
+      "URL_FIELD": "Website-URL",
+      "CANCEL": "Abbrechen",
+      "SAVE": "Speichern",
+      "ADD": "Hinzufügen",
+      "VALIDATION": {
+        "MIN_CHARS": "Min. 3 Zeichen",
+        "VALID_URL": "Gültige URL eingeben"
+      }
+    }
+  }
+}
