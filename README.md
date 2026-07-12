@@ -23,6 +23,8 @@ This project is based on the [Bookmark Manager App](https://www.frontendmentor.i
 - 📅 Display creation and last edited date
 - 🌐 Automatic favicon loading via Google Favicon Service
 - 📱 Responsive layout (mobile, desktop)
+- ♾️ Infinite scroll with lazy loading (10 bookmarks per page)
+- 🌍 Internationalization (i18n) support
 
 ## 🛠️ Tech Stack
 
@@ -37,9 +39,10 @@ This project is based on the [Bookmark Manager App](https://www.frontendmentor.i
 | Tailwind CSS v4 | Utility-first styling |
 | Axios | HTTP client |
 | Supabase (PostgREST) | Backend as a Service / REST API |
-| VueUse | Composable utilities |
+| VueUse | Composable utilities (infinite scroll) |
 | Day.js | Date formatting |
 | Zod | Schema validation |
+| Vue I18n | Internationalization |
 
 ## ⚠️ Frontend Only
 
@@ -112,6 +115,7 @@ src/
 │   ├── dialogs/          # BookmarkDialog (add & edit)
 │   └── side-menu/        # SideMenu with tag filters
 ├── composables/          # useBookmarks, useDateTime, useUtilities
+├── i18n/                 # Translation files
 ├── lib/                  # Supabase client
 ├── models/               # Bookmark TypeScript interface
 ├── store/                # Pinia bookmark store
