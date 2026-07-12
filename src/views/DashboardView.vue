@@ -22,12 +22,11 @@ const sortMenu = ref();
 const sortBy = ref('recently_added');
 const sentinel = ref<HTMLElement | null>(null)
 
-useIntersectionObserver(sentinel, ([{ isIntersecting }]) => {
-  if (isIntersecting) {
+useIntersectionObserver(sentinel, (entries) => {
+  if (entries[0]?.isIntersecting) {
     bookMarksComposable.loadMore()
   }
 })
-
 
 const sortOptions = computed(() => [
   {
