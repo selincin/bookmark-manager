@@ -13,6 +13,7 @@ import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice';
 import DialogService from 'primevue/dialogservice';
 
+document.documentElement.classList.add('dark')
 const app = createApp(App)
 const MyPreset = definePreset(Aura, {
   semantic: {
@@ -36,6 +37,9 @@ app.use(createPinia())
 app.use(PrimeVue, {
   theme: {
     preset: MyPreset,
+    options: {
+      darkModeSelector: '.dark' 
+    }
   },
 })
 app.use(ToastService)

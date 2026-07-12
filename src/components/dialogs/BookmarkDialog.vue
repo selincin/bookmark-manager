@@ -7,6 +7,7 @@ import type Bookmark from '@/models/Bookmark';
 import FloatLabel from 'primevue/floatlabel';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import Textarea from 'primevue/textarea';
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,6 +81,13 @@ const closeDialog = () => {
 
 <template>
     <div v-if="bookmark" class="flex flex-col gap-4 pt-4">
+     <div class="dialog-header flex justify-between py-3">
+        <div>
+            <div class="text-xl font-bold">Edit Bookmark</div>
+            <div>Save a link with details to keep your collection organized.</div>
+        </div>
+        <Button iconOnly rounded variant="text"  icon="pi pi-times" @click="closeDialog()"/>
+     </div>
         <FloatLabel variant="on">
             <InputText id="title" v-model="bookmark.title" @input="changesDetected" autocomplete="off"
                 :placeholder="bookmark?.title ?? ''" class="w-full"
@@ -89,9 +97,10 @@ const closeDialog = () => {
         </FloatLabel>
 
         <FloatLabel variant="on">
-            <InputText id="description" v-model="bookmark.description" @input="changesDetected" autocomplete="off"
+            <Textarea id="description" v-model="bookmark.description" @input="changesDetected" autocomplete="off"
                 :placeholder="bookmark?.description ?? ''" class="w-full"
-                :invalid="inputDescriptionInvalid" />
+                :invalid="inputDescriptionInvalid" rows="5" size="large" resize-none/>
+
             <label for="description">Description</label>
             <small v-if="inputDescriptionInvalid" class="text-red-500">Min. 3 Zeichen</small>
         </FloatLabel>

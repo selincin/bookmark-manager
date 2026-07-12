@@ -128,15 +128,15 @@ const BookmarkTag = () => {
 </script>
 
 <template>
-    <div class="bookmark-card-container shadow-md">
+<div class="bookmark-card-container shadow-md dark:bg-primary-950">
         <div class="card-top flex justify-between items-center gap-4">
             <div class="flex items-center gap-4">
-                <div class="shrink-0">
-                    <img :src="getFavicon(bookmark?.url)" alt="favicon" class="w-8 h-8 rounded-full" @error="(e) => (e.target as HTMLImageElement).src = 'https://placehold.co/32x32'"/>
+                <div class="shrink-0 bg-white rounded-full">
+                    <img :src="getFavicon(bookmark?.url)" alt="favicon" class="w-10 h-10 rounded-full" @error="(e) => (e.target as HTMLImageElement).src = 'https://placehold.co/32x32'"/>
                 </div>
                 <div class="flex flex-col">
-                    <div class="font-bold text-xl bookmark-title"> {{bookmark?.title}} </div>
-                    <div class="text-gray-500 max-w-36 min-w-36 truncate"> {{bookmark?.url}} </div>
+                    <div class="font-bold text-xl bookmark-title dark:text-white"> {{ bookmark?.title }} </div>
+                    <div class="text-gray-500 dark:text-gray-400 max-w-36 min-w-36 truncate"> {{ bookmark?.url }} </div>
                 </div>
             </div>
             <Menu ref="menu" :model="items" popup :pt="{
@@ -149,14 +149,14 @@ const BookmarkTag = () => {
             </Button>
         </div>
         <Divider />
-        <div class="card-middle overflow-y-auto flex flex-col gap-2">
+        <div class="card-middle overflow-y-auto flex flex-col gap-2 dark:text-gray-300">
             {{bookmark?.description}}
             <div>
                 <Tag :severity="BookmarkTag()" :value="bookmark?.tag" class="mt-5"/>
             </div>
         </div>
-        <Divider />
-        <div class="card-bottom flex gap-3 items-baseline justify-between text-gray-500 text-sm">
+        <Divider/>
+        <div class="card-bottom flex gap-3 items-baseline justify-between text-gray-500 dark:text-gray-400 text-sm">
             <div class="flex gap-3">
                 <div class="flex items-center gap-1 text-xs">
                     <i class="pi pi-eye"></i>
@@ -172,7 +172,7 @@ const BookmarkTag = () => {
                 </div>
             </div>
             <div class="flex items-center gap-1">
-                <i v-if="bookmark?.pinned" class="pi pi-thumbtack text-xs!"></i>
+                <i v-if="bookmark?.pinned" class="pi pi-thumbtack text-xs! text-white"></i>
             </div>
         </div>
     </div>
@@ -180,12 +180,10 @@ const BookmarkTag = () => {
 
 <style scoped lang="scss">
 .bookmark-card-container {
-    border: 1px solid rgb(221, 218, 218);
     height: 18rem;
     width: 20rem; 
     border-radius: 1rem;
     padding: 1rem;
-    background-color: #ffff;
     display: flex;
     flex-direction: column;
 }

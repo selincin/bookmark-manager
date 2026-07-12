@@ -35,43 +35,45 @@ onMounted(() => {
 });
 
 const addBookmark = () => {
-    dialog.open(BookmarkDialog, {
-        data: {
-            mode: 'add'
-        },
-        props: {
-            header: 'Add Bookmark',
-            modal: true,
-            style: {
-                width: '30rem'
-            },
-        },
-    });
+  dialog.open(BookmarkDialog, {
+    data: {
+      mode: 'add'
+    },
+    props: {
+      modal: true,
+      style: {
+        width: '30rem'
+      },
+      closable: false,
+      draggable: false,
+      showHeader: false,
+    },
+  });
 }
 
 </script>
 
 <template>
-  <div class="flex h-screen">
+  <div class="flex h-screen dark:bg-primary-950">
     <SideMenu :isOpen="sideMenuOpen" @close="toggleSideMenu" @tagsChanged="onTagsChanged" />
-    <div class="flex flex-col flex-1 min-h-0 bg-primary-50">
-      <div class="p-2 shrink-0 flex items-center gap-2">
+    <div class="flex flex-col flex-1 min-h-0 dark:bg-primary-900">
+      <div class="p-3 shrink-0 flex items-center gap-2 dark:bg-primary-950 border-b border-emerald-800">
         <Button v-if="!sideMenuOpen" @click="toggleSideMenu" icon="pi pi-bookmark" />
         <InputGroup class="flex-1">
           <InputGroupAddon>
             <i class="pi pi-search"></i>
           </InputGroupAddon>
-          <InputText v-model="searchBookmark" placeholder="Search" />
+          <InputText v-model="searchBookmark" placeholder="Search" class="w-full md:max-w-80"/>
         </InputGroup>
-        <Button :label="utilities.isMobile.value ? '' : 'Add bookmark'" icon="pi pi-plus" class="shrink-0 whitespace-nowrap" @click="addBookmark()"/>
-      </div>
+        <Button :label="utilities.isMobile.value ? '' : 'Add bookmark'" icon="pi pi-plus"
+          class="shrink-0 whitespace-nowrap" @click="addBookmark()" />
+        </div>
       <!-- content area -->
       <RouterView :searchTerm="searchBookmark" :selectedTags="selectedTags" />
     </div>
-    <Toast position="top-right"/>
+    <Toast position="top-right" />
     <DynamicDialog />
   </div>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

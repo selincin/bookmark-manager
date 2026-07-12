@@ -13,7 +13,7 @@ const archivedBookmarks = computed(() =>
 <template>
   <div class="flex flex-col h-full overflow-hidden">
     <div class="flex justify-between px-5 pt-5 shrink-0 items-start">
-      <div class="font-semibold">Archived bookmarks</div>
+      <div class="font-semibold dark:text-white text-2xl">Archived bookmarks</div>
     </div>
     <!-- Cards -->
     <div class="flex flex-wrap p-5 gap-4 overflow-y-auto">
