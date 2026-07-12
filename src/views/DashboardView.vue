@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useBookmarkStore } from '@/store/bookmarks'
+import { useBookmarks } from '@/composables/useBookmarksComposable'
+import { useIntersectionObserver } from '@vueuse/core';
 
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import BookmarkCard from '@/components/bookmark-card/BookmarkCard.vue'
 
 const bookmarkStore = useBookmarkStore();
+const bookMarksComposable = useBookmarks()
 
 const props = defineProps<{
   searchTerm: string
@@ -15,6 +18,14 @@ const props = defineProps<{
 
 const sortMenu = ref();
 const sortBy = ref('recently_added');
+const sentinel = ref<HTMLElement | null>(null)
+
+useIntersectionObserver(sentinel, ([{ isIntersecting }]) => {
+  if (isIntersecting) {
+    bookMarksComposable.loadMore()
+  }
+})
+
 
 const sortOptions = computed(() => [
   {
@@ -85,14 +96,44 @@ const filteredBookmarks = computed(() => {
     <div class="flex justify-between px-5 pt-5 shrink-0 items-start">
       <div class="font-semibold dark:text-white text-2xl">All bookmarks</div>
       <div>
-        <Menu ref="sortMenu" :model="sortOptions" popup />
-        <Button label="Sort by" icon="pi pi-sort-alt" @click="toggleSortMenu" />
+        <Menu 
+          ref="sortMenu" 
+          :model="sortOptions" 
+          popup  
+          :pt="{
+            submenuLabel: {
+                class: 'p-0!'
+            }
+        }" 
+          />
+        <Button label="Sort by" icon="pi pi-sort-alt" @click="toggleSortMenu"   :pt="{
+            root: {
+                class: 'bg-none!'
+            }
+        }" />
       </div>
     </div>
     <!-- Cards -->
-    <div class="flex flex-wrap p-5 gap-4 overflow-y-auto">
+    <div class="flex flex-wrap p-5 gap-4 overflow-y-auto content-area">
       <BookmarkCard v-for="bookmark in filteredBookmarks" :key="bookmark.id" :bookmark="bookmark" />
       <div v-if="filteredBookmarks.length == 0" class="dark:text-white">No results found</div>
+      <!-- trigger element -->
+      <div ref="sentinel" class="w-full h-1 observer"></div>
+      <!-- Loading Indicator -->
+      <div v-if="bookmarkStore.loading" class="w-full flex justify-center py-4">
+        <i class="pi pi-spin pi-spinner text-2xl text-primary-500"></i>
+      </div>
+      <div v-if="!bookmarkStore.hasMore && filteredBookmarks.length > 0"
+        class="w-full text-center text-gray-400 py-4 text-sm">
+        All bookmarks loaded
+      </div>
     </div>
   </div>
 </template>
+
+<style lang="scss">
+.content-area {
+  max-height: 58rem;
+  overflow: auto;
+}
+</style>

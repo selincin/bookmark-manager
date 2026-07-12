@@ -98,11 +98,12 @@ const editBookmark = () => {
             bookmark: props.bookmark,
         },
         props: {
-            header: 'Edit Bookmark',
             modal: true,
             style: {
                 width: '30rem'
             },
+            draggable: false,
+            showHeader: false
         },
     });
 }
@@ -171,14 +172,14 @@ const BookmarkTag = () => {
                     {{ dateTimeComposable.formatRelative(bookmark?.updated_at) }}
                 </div>
             </div>
-            <div class="flex items-center gap-1">
-                <i v-if="bookmark?.pinned" class="pi pi-thumbtack text-xs! text-white"></i>
+            <div v-if="bookmark?.pinned" class="flex items-center gap-1">
+                <i class="pi pi-thumbtack text-xs! text-white"></i>
             </div>
         </div>
     </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .bookmark-card-container {
     height: 18rem;
     width: 20rem; 
@@ -211,7 +212,6 @@ const BookmarkTag = () => {
 @media (max-width: 768px) {
     .bookmark-card-container {
         width: 100%;
-
     }
 }
 </style>

@@ -16,8 +16,8 @@ const archivedBookmarks = computed(() =>
       <div class="font-semibold dark:text-white text-2xl">Archived bookmarks</div>
     </div>
     <!-- Cards -->
-    <div class="flex flex-wrap p-5 gap-4 overflow-y-auto">
-      <div v-for="bookmark in archivedBookmarks" :key="bookmark.id" class="opacity-60 grayscale">
+    <div class="flex flex-wrap p-5 gap-4 overflow-y-auto content-area">
+      <div v-for="bookmark in archivedBookmarks" :key="bookmark.id" class="opacity-60 grayscale w-full md:w-auto">
         <BookmarkCard :bookmark="bookmark" />
       </div>
     </div>

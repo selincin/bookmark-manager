@@ -15,26 +15,30 @@ const headers = {
 
 export function useBookmarks() {
     const bookmarkStore = useBookmarkStore()
-
-    const fetchBookmarks = async () => {
+    
+    const fetchBookmarks = async (offset: number) => {
         let result
         try {
-            result = await axios.get('/rest/v1/bookmarks?select=*', {
-                baseURL: BASE_URL,
-                headers: headers
-            })
+            result = await axios.get(
+                `/rest/v1/bookmarks?select=*&limit=${LIMIT}&offset=${offset}&order=created_at.desc`,
+                { baseURL: BASE_URL, headers }
+            )
         } catch (error) {
-            console.log('error: ', error);
-            result = null;
+            console.log('error: ', error)
+            result = null
         }
         return result
     }
 
+    const LIMIT = 10
+
     const loadBookmarks = async () => {
         bookmarkStore.loading = true
         bookmarkStore.bookmarks = []
+        bookmarkStore.offset = 0
+        bookmarkStore.hasMore = true        
 
-        const result = await fetchBookmarks()
+        const result = await fetchBookmarks(bookmarkStore.offset)
 
         if (!result) {
             console.log('Failed to load bookmarks')
@@ -43,7 +47,27 @@ export function useBookmarks() {
         }
 
         bookmarkStore.bookmarks = result.data as Bookmark[];
-        bookmarkStore.loading = false;
+        bookmarkStore.offset = LIMIT
+        bookmarkStore.hasMore = result.data.length === LIMIT
+        bookmarkStore.loading = false
+    }
+
+    const loadMore = async () => {
+        if (!bookmarkStore.hasMore || bookmarkStore.loading) return
+
+        bookmarkStore.loading = true
+
+        const result = await fetchBookmarks(bookmarkStore.offset)
+
+        if (!result) {
+            bookmarkStore.loading = false
+            return
+        }
+
+        bookmarkStore.bookmarks.push(...result.data as Bookmark[])
+        bookmarkStore.offset += LIMIT
+        bookmarkStore.hasMore = result.data.length === LIMIT
+        bookmarkStore.loading = false
     }
 
     const createBookmark = async (bookmark: Bookmark) => {
@@ -135,6 +159,7 @@ export function useBookmarks() {
 
     return {
         loadBookmarks,
+        loadMore,
         createBookmark,
         archiveBookmark,
         togglePin,
